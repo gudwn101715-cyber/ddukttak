@@ -27,7 +27,7 @@ if (!javascript || !css || outputs.some(output => output.type === 'asset' && !ou
 }
 const safeScript = javascript.replace(/<\/script/gi, '<\\/script');
 const safeStyles = css.replace(/<\/style/gi, '<\\/style');
-const packages = ['react', 'react-dom', 'lucide-react', '@fontsource-variable/dm-sans', '@fontsource-variable/noto-sans-kr'];
+const packages = ['react', 'react-dom', 'lucide-react', 'zod', '@fontsource-variable/dm-sans', '@fontsource-variable/noto-sans-kr'];
 const notices = (await Promise.all(packages.map(async name => `${name}\n${await readFile(path.resolve('node_modules', name, 'LICENSE'), 'utf8')}`))).join('\n\n');
 const html = `<!doctype html>
 <!-- Third-party licenses\n${notices.replace(/-->/g, '-- >')}\n-->

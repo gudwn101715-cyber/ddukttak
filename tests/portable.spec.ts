@@ -54,7 +54,7 @@ async function savedProject(page: Page): Promise<Project> {
 }
 
 async function createWithWizard(page: Page, name: string, gallery = false) {
-  await page.goto(portableOrigin, { waitUntil: 'networkidle' });
+  await page.goto(`${portableOrigin}/?studio=websites`, { waitUntil: 'networkidle' });
   expect(await page.evaluate(() => Boolean((window as Window & { __DDUKTTAK_PORTABLE__?: boolean }).__DDUKTTAK_PORTABLE__))).toBe(true);
   await expect(page.getByText('설치 없는 체험판', { exact: true })).toBeVisible();
   await page.getByRole('button', { name: '새 프로젝트 만들기', exact: true }).click();

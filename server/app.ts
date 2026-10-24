@@ -9,6 +9,8 @@ import type { AppSchema, AppVersion, ChatMessage, Project } from '../src/lib/sch
 import { renderAppHtml } from '../src/lib/renderer.js';
 import { WorkspaceStore } from './store.js';
 import { AiServiceError, requestAiSchema, type AiOptions } from './ai.js';
+import { registerCreativeRoutes } from './creative.js';
+import type { CreativeFetch } from './creative-ai.js';
 
 class HttpError extends Error {
   constructor(public readonly status: number, message: string) { super(message); }
@@ -20,6 +22,7 @@ export interface AppOptions {
   aiModel?: string;
   staticDir?: string;
   allowedOrigins?: string[];
+  creativeFetch?: CreativeFetch;
 }
 const feature = z.enum(['contact', 'booking', 'gallery', 'faq', 'newsletter', 'testimonials']);
 const createInput = z.object({
@@ -94,6 +97,7 @@ export function createApp(options: AppOptions = {}) {
     next();
   });
   app.use(express.json({ limit: '3mb' }));
+  registerCreativeRoutes(app, options);
 
   const generationRequests = new Map<string, { count: number; reset: number }>();
   const costly = (req: Request, _res: Response, next: NextFunction) => {

@@ -17,14 +17,14 @@ async function createProject(request: APIRequestContext, features: GenerateInput
 }
 
 async function openStudio(page: Page, project: Project) {
-  await page.goto(`/#editor/${project.id}`);
+  await page.goto(`/?studio=websites#editor/${project.id}`);
   await expect(page.getByRole('heading', { level: 1, name: project.name, exact: true })).toBeVisible();
   await expect(page.locator('iframe[title$="미리보기"]')).toBeVisible();
 }
 
 async function wizardProject(page: Page) {
   const name = `E2E 처음 만든 공방 ${Date.now()}`;
-  await page.goto('/');
+  await page.goto('/?studio=websites');
   await page.getByRole('button', { name: '새 프로젝트 만들기', exact: true }).click();
   const wizard = page.getByRole('dialog');
   await wizard.getByRole('button', { name: /매장 · 예약/ }).click();
@@ -186,7 +186,7 @@ test('automatic checks, local publishing, immutable published output and downloa
 
 test('390px mobile layout navigates without horizontal overflow and recovers unfinished answers', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/?studio=websites');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.getByRole('button', { name: '메뉴 열기', exact: true }).click();
@@ -274,7 +274,7 @@ for (const draft of damagedDraftCases) {
       localStorage.setItem('ddukttak-draft', raw);
       localStorage.setItem('ddukttak-draft-step', step);
     }, { raw: draft.raw, step: draft.step });
-    await page.goto('/');
+    await page.goto('/?studio=websites');
     await expect(page.getByRole('button', { name: '새 프로젝트 만들기', exact: true })).toBeVisible();
     await page.getByRole('button', { name: '새 프로젝트 만들기', exact: true }).click();
     const wizard = page.getByRole('dialog');
